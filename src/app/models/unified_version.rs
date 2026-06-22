@@ -234,6 +234,7 @@ pub struct LaunchContext {
     pub launcher_name: String,
     pub launcher_version: String,
     pub classpath: String,
+    pub java_version: u32,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

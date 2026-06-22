@@ -1,11 +1,6 @@
-use crate::app::models::unified_version::{
-    JvmRule,
-    Name,
-};
+use crate::app::models::unified_version::{JvmRule, Name};
 
-pub fn check_jvm_rules(
-    rules: &[JvmRule],
-) -> bool {
+pub fn check_jvm_rules(rules: &[JvmRule]) -> bool {
     for rule in rules {
         if let Some(os) = &rule.os.name {
             match os {

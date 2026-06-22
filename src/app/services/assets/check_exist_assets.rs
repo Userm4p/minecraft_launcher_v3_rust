@@ -1,10 +1,10 @@
-use std::{path::Path};
+use std::path::Path;
 
 use tokio::sync::mpsc;
 
-use crate::app::utils::helpers::{resolve_assets_path, send_log}; 
+use crate::app::utils::helpers::{resolve_assets_path, send_log};
 
-pub fn check_exist_assets( 
+pub fn check_exist_assets(
     installation_path: &str,
     hash: &str,
     size: u64,
@@ -26,14 +26,17 @@ pub fn check_exist_assets(
             let message = format!("Failed to get metadata for asset {}", hash);
             send_log(tx, &message);
             return false;
-        },
+        }
     };
 
     let message = format!("Asset {} exists: {}", hash, file_size == size);
     send_log(tx, &message);
 
     if file_size != size {
-        let message = format!("Asset {} size mismatch: expected {}, got {}", hash, size, file_size);
+        let message = format!(
+            "Asset {} size mismatch: expected {}, got {}",
+            hash, size, file_size
+        );
         send_log(tx, &message);
     }
 

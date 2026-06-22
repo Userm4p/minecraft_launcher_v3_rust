@@ -32,7 +32,7 @@ pub async fn download_asset(
     }
 
     std::fs::write(asset_path, bytes)?;
-    
+
     send_log(tx, format!("Downloaded asset: {}", asset_hash));
 
     Ok(())

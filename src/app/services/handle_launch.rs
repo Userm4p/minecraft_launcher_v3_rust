@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use anyhow::Result;
+use anyhow::{Result, Error}; 
 use tokio::sync::mpsc;
 
 use crate::app::{
@@ -23,7 +23,7 @@ use crate::app::{
             launch_game::{self, launch_minecraft},
         },
     },
-    utils::helpers::send_log,
+    utils::helpers::{get_java_version_number, send_log},
 };
 
 pub async fn handle_launch(
@@ -113,12 +113,15 @@ pub async fn handle_launch(
 
     send_log(tx, &class_path);
 
+    let java_version_number = get_java_version_number().ok_or(Error::msg("Java version not found"))?;
+
     let context = LaunchContext {
         ram_mb: ram_allocation_mb,
         classpath: class_path.to_string(),
         launcher_name: "My Rust Launcher".to_string(),
         launcher_version: "1.0.0".to_string(),
         natives_directory: format!("{}/versions/{}/natives", installation_path, manifest.id),
+        java_version: java_version_number,
     };
 
     let jvm_args = build_jvm_arguments(&manifest, &context);

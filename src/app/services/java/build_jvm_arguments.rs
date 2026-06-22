@@ -16,7 +16,10 @@ pub fn build_jvm_arguments(
     for arg in &manifest.arguments.jvm {
         match arg {
             JvmElement::String(value) => {
-                args.push(replace_jvm_placeholders(value, context));
+                let arg = replace_jvm_placeholders(value, context);
+                if is_runtime_compatible(&arg, context.java_version) {
+                    args.push(arg);
+                }
             }
 
             JvmElement::JvmClass(rule_arg) => {
@@ -26,12 +29,18 @@ pub fn build_jvm_arguments(
 
                 match &rule_arg.value {
                     Value::String(value) => {
-                        args.push(replace_jvm_placeholders(value, context));
+                        let arg = replace_jvm_placeholders(value, context);
+                        if is_runtime_compatible(&arg, context.java_version) {
+                            args.push(arg);
+                        }
                     }
 
                     Value::StringArray(values) => {
                         for value in values {
-                            args.push(replace_jvm_placeholders(value, context));
+                            let arg = replace_jvm_placeholders(value, context);
+                            if is_runtime_compatible(&arg, context.java_version) {
+                                args.push(arg);
+                            }
                         }
                     }
                 }
@@ -40,4 +49,14 @@ pub fn build_jvm_arguments(
     }
 
     args
+}
+
+fn is_runtime_compatible(arg: &str, java_major: u32) -> bool {
+    match arg {
+        "--sun-misc-unsafe-memory-access=allow" => false,
+
+        x if x.starts_with("-XX:+UseConcMarkSweepGC") && java_major >= 14 => false,
+
+        _ => true,
+    }
 }

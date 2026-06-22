@@ -96,7 +96,14 @@ fn logs_container(ui: &mut egui::Ui, logs: &[String]) {
             .max_height(available_height)
             .show(ui, |ui| {
                 ui.set_min_size(egui::vec2(ui.available_width(), available_height));
-                let visible_logs = logs.iter().rev().take(200).collect::<Vec<_>>().into_iter().rev().collect::<Vec<_>>();
+                let visible_logs = logs
+                    .iter()
+                    .rev()
+                    .take(200)
+                    .collect::<Vec<_>>()
+                    .into_iter()
+                    .rev()
+                    .collect::<Vec<_>>();
                 ui.vertical(|ui| {
                     for log in visible_logs {
                         ui.label(

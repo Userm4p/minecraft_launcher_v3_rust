@@ -1,8 +1,9 @@
 use anyhow::Result;
-use tokio::sync::mpsc::UnboundedSender; 
 use std::{
-    io::{BufRead, BufReader},process::{Command, Stdio}
+    io::{BufRead, BufReader},
+    process::{Command, Stdio},
 };
+use tokio::sync::mpsc::UnboundedSender;
 
 use crate::app::{app_state::LauncherEvent, utils::helpers::send_log};
 
@@ -11,7 +12,7 @@ pub fn launch_minecraft(
     jvm_args: Vec<String>,
     main_class: &str,
     game_args: Vec<String>,
-    tx: &UnboundedSender<LauncherEvent>
+    tx: &UnboundedSender<LauncherEvent>,
 ) -> Result<()> {
     let mut child = Command::new(java_path)
         .args(&jvm_args)
@@ -27,7 +28,8 @@ pub fn launch_minecraft(
             let reader = BufReader::new(stderr);
 
             for line in reader.lines().flatten() {
-                send_log(&tx_copy, format!("[MC ERROR] {}", line)); 
+                send_log(&tx_copy, format!("[MC ERROR] {}", line));
+                let _ = tx_copy.send(LauncherEvent::Finished);
             }
         });
     }
@@ -37,8 +39,9 @@ pub fn launch_minecraft(
         std::thread::spawn(move || {
             let reader = BufReader::new(stdout);
 
-            for line in reader.lines().flatten() { 
-                send_log(&tx_copy, format!("[MC] {}", line)); 
+            for line in reader.lines().flatten() {
+                send_log(&tx_copy, format!("[MC] {}", line));
+                let _ = tx_copy.send(LauncherEvent::Finished);
             }
         });
     }

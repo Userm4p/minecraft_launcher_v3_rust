@@ -22,9 +22,7 @@ pub fn build_classpath(
             .join(path);
 
         if library_path.exists() {
-            classpath_entries.push(
-                library_path.to_string_lossy().to_string(),
-            );
+            classpath_entries.push(library_path.to_string_lossy().to_string());
         }
     }
 
@@ -33,9 +31,7 @@ pub fn build_classpath(
         .join(&manifest.id)
         .join(format!("{}.jar", manifest.id));
 
-    classpath_entries.push(
-        client_jar.to_string_lossy().to_string(),
-    );
+    classpath_entries.push(client_jar.to_string_lossy().to_string());
 
     Ok(classpath_entries.join(separator))
 }

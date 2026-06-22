@@ -1,5 +1,5 @@
 use anyhow::Result;
-use futures::{stream, StreamExt};
+use futures::{StreamExt, stream};
 use tokio::sync::mpsc;
 
 use crate::app::{

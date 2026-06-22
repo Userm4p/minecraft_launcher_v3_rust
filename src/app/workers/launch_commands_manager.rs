@@ -22,7 +22,15 @@ pub async fn launch_commands_manager(
                     "Launching {} version...",
                     version_url
                 )));
-                match handle_launch(&installation_path, &version_url, &launcher_event_tx, &username, ram_allocation).await {
+                match handle_launch(
+                    &installation_path,
+                    &version_url,
+                    &launcher_event_tx,
+                    &username,
+                    ram_allocation,
+                )
+                .await
+                {
                     Ok(_) => {
                         let _ = launcher_event_tx.send(LauncherEvent::Log(
                             "Launch process completed successfully.".into(),

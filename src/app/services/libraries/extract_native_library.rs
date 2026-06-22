@@ -7,10 +7,7 @@ use std::{
 use anyhow::Result;
 use zip::ZipArchive;
 
-pub fn extract_native_library(
-    jar_path: &Path,
-    natives_dir: &Path,
-) -> Result<()> {
+pub fn extract_native_library(jar_path: &Path, natives_dir: &Path) -> Result<()> {
     let file = File::open(jar_path)?;
 
     let mut archive = ZipArchive::new(file)?;
@@ -19,7 +16,7 @@ pub fn extract_native_library(
         let mut entry = archive.by_index(i)?;
 
         let name = entry.name().to_string();
- 
+
         if name.starts_with("META-INF") {
             continue;
         }

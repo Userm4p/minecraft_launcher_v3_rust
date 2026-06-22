@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::app::models::unified_version::{Action, TentacledOs, UnifiedArguments}; 
+use crate::app::models::unified_version::{Action, TentacledOs, UnifiedArguments};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -20,7 +20,7 @@ pub struct VersionManifest {
     pub time: String,
     #[serde(rename = "type")]
     pub version_manifest_type: String,
-} 
+}
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -82,4 +82,4 @@ pub struct LoggingClient {
     pub file: AssetIndex,
     #[serde(rename = "type")]
     pub client_type: String,
-} 
+}
