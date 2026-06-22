@@ -7,6 +7,7 @@ Desktop Minecraft launcher written in Rust, with a native UI (egui/eframe), reso
 - Shows a home screen to enter a username.
 - Loads the official version list from Mojang.
 - Lets you select a version (release, and optionally snapshot).
+- Currently supports only Minecraft versions newer than 1.19.
 - Lets you configure RAM and other basic launcher options.
 - Downloads and validates required components:
   - Version manifest.
